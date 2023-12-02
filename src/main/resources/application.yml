@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+#      url: jdbc:mysql://43.140.197.15:3306/vote
+      url: jdbc:mysql://localhost:3306/counselor_competition
+      password: root
+#      password: 18980767847Fxy,
+      username: root
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.bluemsun.entity
+
+server:
+  port: 8080
