@@ -14,8 +14,22 @@ public class CandidateServiceImpl implements CandidateService {
     @Autowired
     CandidateDao candidateDao;
 
+    /**
+     * 获取所有选手
+     * @return
+     */
     @Override
     public List<Candidate> getaAllCandidate() {
         return candidateDao.selctAll();
+    }
+
+    /**
+     * 获取一个选手的分数
+     * @return
+     */
+    @Override
+    public Candidate getOne(Integer id) {
+        return candidateDao.selectOne(id);
+
     }
 }

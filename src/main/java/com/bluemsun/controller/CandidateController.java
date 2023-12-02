@@ -28,12 +28,22 @@ public class CandidateController {
     }
 
     @RequestMapping("/getAll")
-    public ResultDto<List<Candidate>> getOneScore(){
+    public ResultDto<List<Candidate>> getAll(){
         ResultDto<List<Candidate>> rt = new ResultDto<>();
         List<Candidate> candidates = candidateService.getaAllCandidate();
         rt.setResult(true);
         rt.setMsg("获取成功");
         rt.setData(candidates);
+        return rt;
+    }
+
+    @RequestMapping("/getOne")
+    public ResultDto<Candidate> getOneScore(Integer id){
+        ResultDto<Candidate> rt = new ResultDto<>();
+        Candidate candidate = candidateService.getOne(id);
+        rt.setResult(candidate!=null);
+        rt.setMsg(candidate!=null ? "获取成功" : "获取失败，没有此选手");
+        rt.setData(candidate);
         return rt;
     }
 

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CandidateService {
     List<Candidate> getaAllCandidate();
+
+    Candidate getOne(Integer id);
 }

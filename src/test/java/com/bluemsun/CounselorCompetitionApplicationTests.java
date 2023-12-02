@@ -25,4 +25,9 @@ class CounselorCompetitionApplicationTests {
     public void getAllTest(){
         System.out.println(candidateService.getaAllCandidate());
     }
+
+    @Test
+    public void getOne(){
+        System.out.println(candidateService.getOne(1));
+    }
 }
