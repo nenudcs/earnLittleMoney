@@ -9,7 +9,7 @@ create table t_candidate
    num                  int,  /* 序号 */
    name                 varchar(255),
    score_1              double, /* 基础知识分数 */
-   socre_2              double,  /* 案例讨论分数 */
+   score_2              double,  /* 案例讨论分数 */
    score_3              double,  /* 理论宣讲分数 */
    score_4              double,  /* 谈心谈话分数 */
    score_half           double,  /* 初赛分数 */
