@@ -47,4 +47,8 @@ public class CandidateController {
         return rt;
     }
 
+//    @RequestMapping("/getOneDetail")
+//    public ResultDto<Object> getOneDetail(Integer id, Integer turn){
+//
+//    }
 }
