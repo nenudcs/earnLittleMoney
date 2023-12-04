@@ -1,18 +1,12 @@
 package com.bluemsun.service.impl;
 
-import com.bluemsun.dao.CaseDiscussionDao;
-import com.bluemsun.dao.JudgeDao;
-import com.bluemsun.dao.TalkDao;
-import com.bluemsun.dao.TheoreticalPresentationDao;
+import com.bluemsun.dao.*;
 import com.bluemsun.entity.*;
 import com.bluemsun.service.JudgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.OptionalDouble;
+import java.util.*;
 
 @Service
 public class JudgeServiceImpl implements JudgeService {
@@ -20,6 +14,8 @@ public class JudgeServiceImpl implements JudgeService {
     @Autowired
     JudgeDao judgeDao;
 
+    @Autowired
+    CandidateDao candidateDao;
     @Autowired
     CaseDiscussionDao caseDiscussionDao;
     @Autowired
@@ -36,6 +32,7 @@ public class JudgeServiceImpl implements JudgeService {
             Judge judge1 = judgeDao.selectOne(judge);
             if(judge1 != null) {
                 judge.setId(judge1.getId());
+                judgeDao.set1(judge);
                 return true;
             }
             return false;
@@ -77,32 +74,54 @@ public class JudgeServiceImpl implements JudgeService {
      * 0: 还有评委没有打分
      * 1： 所有评委都已打分，并且分数统计完成
      * -1： 所有评委都已打分，但是分数统计失败
+     * 2: 案例讨论中所有选手都已
      * @param turn
      * @param candidateId
-     * @param judgeNum
      * @return
      */
     @Override
-    public int isDone(Integer turn, Integer candidateId, Integer judgeNum) {
+    public int isDone(Integer turn, Integer candidateId) {
         int result = 0;
         if(turn == 2){
             // 案例讨论
+            // 查看选手是哪个会场的，然后获取评委数量
+            Candidate candidate = candidateDao.selectOne(candidateId);
+            int judgeNum = judgeDao.getJudgeNum(candidate.getHall_id());
+
             int r = caseDiscussionDao.getJudgedNum(candidateId);
             if(r == judgeNum) {
                 // 统计案例讨论的总分
                 /*
-                * 这里先计算本项目的原始得分，当所有选手都被评完分之后再进行归一化
+                * 先计算本项目的原始得分，当所有选手都被评完分之后再进行归一化
                 * */
                 Double score = caculate2(candidateId);
                 int i = caseDiscussionDao.updateOriginScore(score, candidateId);
                 if(i == 1){
                     result = 1;
+                    // 原始分数统计完成，查看这是否是最后一位选手
+                    // 如果是最后一位选手，将分数归一化
+                    int allNumCase = caseDiscussionDao.selectAllNum(candidate.getHall_id());
+                    int allCandidate = candidateDao.selectAllNum(candidate.getHall_id());
+                    if(allCandidate == allNumCase/judgeNum){
+                        // 如果t_case_discussion中所有记录的条数除以评委数量等于选手数量，说明所有选手都已经打分完毕
+                        // 进行归一化
+                        boolean normalize = normalize(candidate.getHall_id());
+                        if(normalize){
+                            // 归一化完成，案例讨论最终得分计算完成
+                            result = 2;
+                        } else {
+                            result = -2;
+                        }
+                    }
+
                 } else {
                     result = -1;
                 }
             }
         } else if(turn == 3){
             // 理论宣讲
+            // 默认处于会场1
+            int judgeNum = judgeDao.getJudgeNum(1);
             int r = theoreticalPresentationDao.getJudgedNum(candidateId);
             if(r == judgeNum){
                 // 统计理论宣讲分数
@@ -117,6 +136,8 @@ public class JudgeServiceImpl implements JudgeService {
 
         } else if(turn == 4){
             // 谈心谈话
+            // 默认处于会场1
+            int judgeNum = judgeDao.getJudgeNum(1);
             int r = talkDao.getJudgedNum(candidateId);
             if(r == judgeNum){
                 // 统计谈心谈话的分数
@@ -131,6 +152,7 @@ public class JudgeServiceImpl implements JudgeService {
         }
         return result;
     }
+
 
     public Double caculate4(Integer candidateId){
         List<Talk> talks = talkDao.getScoreByCandidateId(candidateId);
@@ -201,6 +223,7 @@ public class JudgeServiceImpl implements JudgeService {
         }
 
         if(scores.size() > 5){
+            // 评委数大于5，去掉1个最低分，去掉1个最高分
             Collections.sort(scores);
             scores = scores.subList(1, scores.size() - 1);
         }
@@ -213,6 +236,32 @@ public class JudgeServiceImpl implements JudgeService {
             System.out.println("列表为空");
             return null;
         }
+    }
+
+    /**
+     * 将案例讨论的分数归一化
+     * @return
+     */
+    public boolean normalize(Integer hallId){
+        // 有问题
+        boolean result = true;
+        List<Candidate> candidates = candidateDao.selectAllCandidate(hallId);
+        // 按照案例讨论原始分数进行升序排序
+        candidates.sort(Comparator.comparing(Candidate::getScore_2_origin));
+        double low = candidates.get(0).getScore_2_origin();
+        double high = candidates.get(candidates.size()-1).getScore_2_origin();
+        for (Candidate candidate : candidates) {
+            // 计算归一化之后的得分
+            double finalScore = 75.0 + 20.0 * (candidate.getScore_2_origin() - low) / (high - low);
+            finalScore = Math.round(finalScore * 1000) / 1000.0; // 保留3位小数
+            candidate.setScore_2(finalScore);
+
+            // 持久化到数据库
+            int i = candidateDao.setScore2(candidate);
+
+            result = i==1;
+        }
+        return result;
     }
 }
 

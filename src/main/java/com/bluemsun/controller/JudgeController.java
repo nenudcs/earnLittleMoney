@@ -37,14 +37,14 @@ public class JudgeController {
             session.setAttribute("judge", judge);
 
             // judgeNum：当前有多少个评委
-            ServletContext apllication = request.getServletContext();
-            try{
-                int judgeNum = (int) apllication.getAttribute("judgeNum");
-                judgeNum = judgeNum + 1;
-                apllication.setAttribute("judgeNum", judgeNum);
-            } catch(Exception e){
-                apllication.setAttribute("judgeNum", 1);
-            }
+//            ServletContext apllication = request.getServletContext();
+//            try{
+//                int judgeNum = (int) apllication.getAttribute("judgeNum");
+//                judgeNum = judgeNum + 1;
+//                apllication.setAttribute("judgeNum", judgeNum);
+//            } catch(Exception e){
+//                apllication.setAttribute("judgeNum", 1);
+//            }
 
         }
         return rt;
@@ -63,12 +63,16 @@ public class JudgeController {
             rt.setMsg("打分成功");
 
             // 打分成功后，查看当前选手是否已经被所有评委评分完毕，如果评分完毕，则统计总分
-            ServletContext application = request.getServletContext();
-            int isDone = judgeService.isDone(score.getTurn(), score.getCandidateId(), (Integer) application.getAttribute("judgeNum"));
+//            ServletContext application = request.getServletContext();
+            int isDone = judgeService.isDone(score.getTurn(), score.getCandidateId());
             if(isDone == 1){
                 rt.setMsg("打分成功，分数统计成功");
             } else if(isDone == -1) {
                 rt.setMsg("打分成功, 分数统计失败");
+            } else if(isDone == 2){
+                rt.setMsg("打分你成功，分数统计成功，归一化完成");
+            } else if(isDone == -2){
+                rt.setMsg("打分成功，分数统计成功，归一化失败");
             }
         } else {
             rt.setMsg("打分失败");

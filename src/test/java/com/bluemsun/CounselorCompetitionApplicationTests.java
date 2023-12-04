@@ -1,6 +1,7 @@
 package com.bluemsun;
 
 import com.bluemsun.dao.CandidateDao;
+import com.bluemsun.dao.CaseDiscussionDao;
 import com.bluemsun.entity.Judge;
 import com.bluemsun.entity.Score;
 import com.bluemsun.service.CandidateService;
@@ -17,6 +18,9 @@ class CounselorCompetitionApplicationTests {
     JudgeService judgeService;
     @Autowired
     CandidateService candidateService;
+
+    @Autowired
+    CaseDiscussionDao caseDiscussionDao;
     @Test
     public void loginTest(){
         System.out.println(judgeService.login(new Judge("111", "111")));
@@ -42,6 +46,11 @@ class CounselorCompetitionApplicationTests {
 
     @Test
     public void getJudedNum(){
-        System.out.println(judgeService.isDone(4, 1, 2));
+        System.out.println(judgeService.isDone(4, 1));
+    }
+
+    @Test
+    public void testGetAllNum(){
+        System.out.println(caseDiscussionDao.selectAllNum(1));
     }
 }

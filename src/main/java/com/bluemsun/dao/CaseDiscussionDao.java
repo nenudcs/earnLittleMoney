@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import javax.websocket.server.ServerEndpoint;
 import java.util.List;
 
 @Mapper
@@ -25,4 +26,9 @@ public interface CaseDiscussionDao {
 
     @Update("update t_candidate set score_2_origin = #{originScore} where id = #{candidateId}")
     int updateOriginScore(Double originScore, Integer candidateId);
+
+    @Select("select count(cd.id) " +
+            "from t_case_discussion cd left join t_candidate ca " +
+            "on cd.candidate_id = ca.id where ca.hall_id=#{hallId}")
+    int selectAllNum(Integer hallId);
 }

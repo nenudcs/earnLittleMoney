@@ -8,5 +8,6 @@ public interface JudgeService {
 
     boolean score(Score score);
 
-    int isDone(Integer turn, Integer candidateId, Integer judgeNum);
+    int isDone(Integer turn, Integer candidateId);
+
 }
