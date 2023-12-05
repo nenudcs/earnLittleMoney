@@ -25,4 +25,7 @@ public interface CandidateDao {
 
     @Update("update t_candidate set score_2 = #{score_2} where id = #{id}")
     int setScore2(Candidate candidate);
+
+    @Select("select * from t_candidate where groupId = #{groupId} and hall_id = #{hallId}")
+    List<Candidate> selectByGroupId(Integer groupId, Integer hallId);
 }

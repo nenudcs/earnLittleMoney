@@ -12,8 +12,8 @@ import java.util.List;
 @Mapper
 public interface TheoreticalPresentationDao {
 
-    @Insert("insert into t_theoretical_presentation(candidate_id, judge_id, score_1, score_2, score_3, score_4, score_5) " +
-            "values(#{candidateId}, #{judgeId}, #{score1}, #{score2}, #{score3}, #{score4}, #{score5})")
+    @Insert("insert into t_theoretical_presentation(candidate_id, judge_id, score_1, score_2, score_3, score_4, score_5, score_total) " +
+            "values(#{candidateId}, #{judgeId}, #{score1}, #{score2}, #{score3}, #{score4}, #{score5}, #{scoreTotal})")
     int insetOne(TheoreticalPresentation theoreticalPresentation);
 
     @Select("select count(*) from t_theoretical_presentation where candidate_id = #{candidateId}")

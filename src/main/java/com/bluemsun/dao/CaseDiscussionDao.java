@@ -13,8 +13,8 @@ import java.util.List;
 @Mapper
 public interface CaseDiscussionDao {
 
-    @Insert("insert into t_case_discussion(candidate_id, judge_id, score_1, score_2) " +
-            "values(#{candidateId}, #{judgeId}, #{score1}, #{score2})")
+    @Insert("insert into t_case_discussion(candidate_id, judge_id, score_1, score_2, score_total) " +
+            "values(#{candidateId}, #{judgeId}, #{score1}, #{score2}, #{scoreTotal})")
     int insetOne(CaseDiscussion caseDiscussion);
 
     @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId}")

@@ -16,12 +16,12 @@ public class Candidate {
     private Double score_total; // 决赛分数
     private Integer hall_id; // 会场编号，0或者1
     private Integer promote; // 是否晋级，0：未晋级，1：晋级
-    private Integer group; // 属于那一组（数字相同的为一组）
+    private Integer groupId; // 属于那一组（数字相同的为一组）
 
     public Candidate() {
     }
 
-    public Candidate(Integer id, String name, Integer num, Double score_1, Double score_2, Double score_2_origin, Double score_3, Double score_4, Double score_half, Double score_total, Integer hall_id, Integer promote, Integer group) {
+    public Candidate(Integer id, String name, Integer num, Double score_1, Double score_2, Double score_2_origin, Double score_3, Double score_4, Double score_half, Double score_total, Integer hall_id, Integer promote, Integer groupId) {
         this.id = id;
         this.name = name;
         this.num = num;
@@ -34,7 +34,7 @@ public class Candidate {
         this.score_total = score_total;
         this.hall_id = hall_id;
         this.promote = promote;
-        this.group = group;
+        this.groupId = groupId;
     }
 
     public Candidate(Integer id, String name, Integer num, Double score_1, Double score_2, Double score_2_origin, Double score_3, Double score_4, Double score_half, Double score_total, Integer hall_id, Integer promote) {

@@ -2,8 +2,11 @@ package com.bluemsun;
 
 import com.bluemsun.dao.CandidateDao;
 import com.bluemsun.dao.CaseDiscussionDao;
+import com.bluemsun.entity.Candidate;
 import com.bluemsun.entity.Judge;
 import com.bluemsun.entity.Score;
+import com.bluemsun.entity.Show;
+import com.bluemsun.service.AdminService;
 import com.bluemsun.service.CandidateService;
 import com.bluemsun.service.JudgeService;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,9 @@ class CounselorCompetitionApplicationTests {
     JudgeService judgeService;
     @Autowired
     CandidateService candidateService;
+
+    @Autowired
+    AdminService adminService;
 
     @Autowired
     CaseDiscussionDao caseDiscussionDao;
@@ -52,5 +58,18 @@ class CounselorCompetitionApplicationTests {
     @Test
     public void testGetAllNum(){
         System.out.println(caseDiscussionDao.selectAllNum(1));
+
+    }
+
+    @Test
+    public void showTest(){
+        Show show = new Show();
+        show.setTurn(2);
+//        show.setCandidateId(1);
+        show.setGroupId(1);
+        show.setHallId(1);
+        System.out.println(adminService.showResult(show));
+
+
     }
 }
