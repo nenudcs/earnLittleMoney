@@ -31,4 +31,12 @@ public interface CaseDiscussionDao {
             "from t_case_discussion cd left join t_candidate ca " +
             "on cd.candidate_id = ca.id where ca.hall_id=#{hallId}")
     int selectAllNum(Integer hallId);
+
+    @Select("select MAX(score_total) " +
+            "from t_case_discussion where candidate_id = #{candidateId}")
+    int selectMaxScore(Integer maxCase);
+
+    @Select("select MIN(score_total) " +
+            "from t_case_discussion where candidate_id = #{candidateId}")
+    int selectMinScore(Integer minCase);
 }

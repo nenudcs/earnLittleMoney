@@ -40,9 +40,19 @@ public class AdminController {
         return rt;
     }
 
+
+    @RequestMapping("/showAll")
     public ResultDto<List<FinalScore>> getFinalScore(){
         ResultDto<List<FinalScore>> rt = new ResultDto<>();
-
+        List<FinalScore> finalScores = adminService.getFinalScore();
+        if(finalScores.size() == 0){
+            rt.setResult(false);
+            rt.setMsg("获取失败");
+        } else {
+            rt.setResult(true);
+            rt.setMsg("获取成功");
+            rt.setData(finalScores);
+        }
         return rt;
     }
 

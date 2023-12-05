@@ -25,4 +25,12 @@ public interface TalkDao {
 
     @Update("update t_candidate set score_4 = #{score} where id = #{candidateId}")
     int updateScore4ByCandidateId(Double score, Integer candidateId);
+
+    @Select("select MAX(score_total) " +
+            "from t_talk where candidate_id = #{candidateId}")
+    int selectMaxScore(Integer maxCase);
+
+    @Select("select MIN(score_total) " +
+            "from t_talk where candidate_id = #{candidateId}")
+    int selectMinScore(Integer minCase);
 }

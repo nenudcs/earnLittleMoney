@@ -25,4 +25,12 @@ public interface TheoreticalPresentationDao {
 
     @Update("update t_candidate set score_3 = #{score} where id = #{candidateId}")
     int updateScore3ByCandidateId(Double score, Integer candidateId);
+
+    @Select("select MAX(score_total) " +
+            "from t_theoretical_presentation where candidate_id = #{candidateId}")
+    int selectMaxScore(Integer maxCase);
+
+    @Select("select MIN(score_total) " +
+            "from t_theoretical_presentation where candidate_id = #{candidateId}")
+    int selectMinScore(Integer minCase);
 }
