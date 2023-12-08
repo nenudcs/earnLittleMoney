@@ -14,6 +14,9 @@ public interface CandidateDao {
             "from t_candidate")
     List<Candidate> selctAll();
 
+    @Select("select * from t_candidate where promote = 1")
+    List<Candidate> selectAllPass();
+
     @Select("select * from t_candidate where id=#{id}")
     Candidate selectOne(Integer id);
 
@@ -26,6 +29,15 @@ public interface CandidateDao {
     @Update("update t_candidate set score_2 = #{score_2} where id = #{id}")
     int setScore2(Candidate candidate);
 
+    @Update("update t_candidate set score_half = #{score_half} where id = #{id}")
+    int setScoreHalf(Candidate candidate);
+
+    @Update("update t_candidate set score_total = #{score_total} where id = #{id}")
+    int setScoreTotal(Candidate candidate);
+
     @Select("select * from t_candidate where groupId = #{groupId} and hall_id = #{hallId}")
     List<Candidate> selectByGroupId(Integer groupId, Integer hallId);
+
+    @Select("select count(*) from t_candidate where promote = #{promote}")
+    int selectAllNumByPromote(Integer promote);
 }

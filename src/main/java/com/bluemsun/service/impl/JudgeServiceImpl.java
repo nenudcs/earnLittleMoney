@@ -39,35 +39,45 @@ public class JudgeServiceImpl implements JudgeService {
         }
     }
 
+    /**
+     * 1:打分成功
+     * 0：打分失败
+     * -1：已打分
+     * @param score
+     * @return
+     */
     @Override
-    public boolean score(Score score) {
-        boolean result = false;
+    public int score(Score score) {
+
+
         if(score.getTurn() == 2){
             // 案例讨论
+            // 查看当前评委是否已经给该选手打过分了
+
             CaseDiscussion caseDiscussion = new CaseDiscussion();
             caseDiscussion.setScores(score.getScores());
             caseDiscussion.setCandidateId(score.getCandidateId());
             caseDiscussion.setJudgeId(score.getJudgeId());
+            int i = caseDiscussionDao.selectIsJudged(caseDiscussion);
+            if(i > 0){
+                return -1;
+            }
             int r = caseDiscussionDao.insetOne(caseDiscussion);
-            if (r == 1) result = true;
-        } else if(score.getTurn() == 3){
-            // 理论宣讲
-            TheoreticalPresentation theoreticalPresentation = new TheoreticalPresentation();
-            theoreticalPresentation.setScores(score.getScores());
-            theoreticalPresentation.setCandidateId(score.getCandidateId());
-            theoreticalPresentation.setJudgeId(score.getJudgeId());
-            int r = theoreticalPresentationDao.insetOne(theoreticalPresentation);
-            if (r == 1) result = true;
-        } else if(score.getTurn() == 4){
+            if (r == 1) return 1;
+        }  else if(score.getTurn() == 3){
             // 谈心谈话
             Talk talk = new Talk();
             talk.setScores(score.getScores());
             talk.setCandidateId(score.getCandidateId());
             talk.setJudgeId(score.getJudgeId());
+            int i = talkDao.selectIsJudged(talk);
+            if(i > 0){
+                return -1;
+            }
             int r = talkDao.insetOne(talk);
-            if (r == 1) result = true;
+            if (r == 1) return 1;
         }
-        return result;
+        return 0;
     }
 
     /**
@@ -84,57 +94,23 @@ public class JudgeServiceImpl implements JudgeService {
         int result = 0;
         if(turn == 2){
             // 案例讨论
-            // 查看选手是哪个会场的，然后获取评委数量
-            Candidate candidate = candidateDao.selectOne(candidateId);
-            int judgeNum = judgeDao.getJudgeNum(candidate.getHall_id());
-
-            int r = caseDiscussionDao.getJudgedNum(candidateId);
-            if(r == judgeNum) {
-                // 统计案例讨论的总分
-                /*
-                * 先计算本项目的原始得分，当所有选手都被评完分之后再进行归一化
-                * */
-                Double score = caculate2(candidateId);
-                int i = caseDiscussionDao.updateOriginScore(score, candidateId);
-                if(i == 1){
-                    result = 1;
-                    // 原始分数统计完成，查看这是否是最后一位选手
-                    // 如果是最后一位选手，将分数归一化
-                    int allNumCase = caseDiscussionDao.selectAllNum(candidate.getHall_id());
-                    int allCandidate = candidateDao.selectAllNum(candidate.getHall_id());
-                    if(allCandidate == allNumCase/judgeNum){
-                        // 如果t_case_discussion中所有记录的条数除以评委数量等于选手数量，说明所有选手都已经打分完毕
-                        // 进行归一化
-                        boolean normalize = normalize(candidate.getHall_id());
-                        if(normalize){
-                            // 归一化完成，案例讨论最终得分计算完成
-                            result = 2;
-                        } else {
-                            result = -2;
-                        }
-                    }
-
-                } else {
-                    result = -1;
-                }
-            }
-        } else if(turn == 3){
-            // 理论宣讲
             // 默认处于会场1
             int judgeNum = judgeDao.getJudgeNum(1);
-            int r = theoreticalPresentationDao.getJudgedNum(candidateId);
+            int r = caseDiscussionDao.getJudgedNum(candidateId);
             if(r == judgeNum){
-                // 统计理论宣讲分数
-                Double score = caculate3(candidateId);
-                int i = theoreticalPresentationDao.updateScore3ByCandidateId(score, candidateId);
+                // 统计案例讨论的分数
+                Double score = caculate2(candidateId);
+                Candidate candidate = new Candidate();
+                candidate.setId(candidateId);
+                candidate.setScore_2(score);
+                int i = candidateDao.setScore2(candidate);
                 if(i == 1){
                     result = 1;
                 } else {
                     result = -1;
                 }
             }
-
-        } else if(turn == 4){
+        }  else if(turn == 3){
             // 谈心谈话
             // 默认处于会场1
             int judgeNum = judgeDao.getJudgeNum(1);
@@ -145,6 +121,7 @@ public class JudgeServiceImpl implements JudgeService {
                 int i = talkDao.updateScore4ByCandidateId(score, candidateId);
                 if(i == 1){
                     result = 1;
+                    // 谈心谈话结束，统计决赛成绩
                 } else {
                     result = -1;
                 }
@@ -153,18 +130,21 @@ public class JudgeServiceImpl implements JudgeService {
         return result;
     }
 
+    @Override
+    public boolean logout(Integer judgeId) {
+        Judge judge = new Judge();
+        judge.setId(judgeId);
+        int i = judgeDao.set0(judge);
+        return i==1;
+    }
+
 
     public Double caculate4(Integer candidateId){
         List<Talk> talks = talkDao.getScoreByCandidateId(candidateId);
         List<Double> scores = new ArrayList<>();
         for(Talk c : talks){
-            double score1 = c.getScore1();
-            double score2 = c.getScore2();
-            double score3 = c.getScore3();
-            double score4 = c.getScore4();
-
-            double score = score1 + score2 + score3 + score4;
-            scores.add(score);
+            double score1 = c.getScore1();;
+            scores.add(score1);
         }
 
         if(scores.size() > 5){

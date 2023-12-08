@@ -1,19 +1,19 @@
 package com.bluemsun;
 
-import com.bluemsun.dao.CandidateDao;
+import com.auth0.jwt.interfaces.Claim;
 import com.bluemsun.dao.CaseDiscussionDao;
-import com.bluemsun.entity.Candidate;
 import com.bluemsun.entity.Judge;
 import com.bluemsun.entity.Score;
 import com.bluemsun.entity.Show;
 import com.bluemsun.service.AdminService;
 import com.bluemsun.service.CandidateService;
 import com.bluemsun.service.JudgeService;
+import com.bluemsun.utils.JWTUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class CounselorCompetitionApplicationTests {
@@ -71,5 +71,22 @@ class CounselorCompetitionApplicationTests {
         System.out.println(adminService.showResult(show));
 
 
+    }
+
+    @Test
+    public void testJwt(){
+        Integer id = 1;
+        try {
+            String token = JWTUtils.createToken(id);
+            Map<String, Claim> stringClaimMap = JWTUtils.verifyToken(token);
+            Integer id2 = stringClaimMap.get("id").asInt();
+
+            System.out.println(id2);
+            long tokenExpireDate = JWTUtils.getRemainingMinutes(token);
+            System.out.println(tokenExpireDate);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

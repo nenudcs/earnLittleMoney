@@ -1,9 +1,11 @@
 package com.bluemsun.controller;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.bluemsun.entity.Judge;
 import com.bluemsun.entity.Score;
 import com.bluemsun.entity.dto.ResultDto;
 import com.bluemsun.service.JudgeService;
+import com.bluemsun.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 评委
@@ -25,16 +29,23 @@ public class JudgeController {
     JudgeService judgeService;
 
     @RequestMapping("/login")
-    public ResultDto<Object> login(@RequestBody Judge judge, HttpServletRequest request){
+    public ResultDto<Object> login(@RequestBody Judge judge){
         ResultDto<Object> rt = new ResultDto<>();
         boolean success = judgeService.login(judge);
         rt.setResult(success);
         rt.setMsg(success ? "登录成功" : "登录失败");
 
         if(success){
-            // 将当前评委信息存入session
-            HttpSession session = request.getSession();
-            session.setAttribute("judge", judge);
+            try {
+                String token = JWTUtils.createToken(judge.getId());
+                Map<String, String> resMap = new HashMap<>();
+                resMap.put("token", token);
+                rt.setData(resMap);
+            } catch (Exception e) {
+                e.printStackTrace();
+                rt.setResult(false);
+                rt.setMsg("token获取失败");
+            }
 
             // judgeNum：当前有多少个评委
 //            ServletContext apllication = request.getServletContext();
@@ -53,13 +64,22 @@ public class JudgeController {
     @RequestMapping("/score")
     public ResultDto<Object> score(@RequestBody Score score, HttpServletRequest request){
         ResultDto<Object> rt = new ResultDto<>();
-        HttpSession session = request.getSession();
-        Judge judge = (Judge) session.getAttribute("judge");
-        score.setJudgeId(judge.getId());
 
-        boolean success = judgeService.score(score);
-        rt.setResult(success);
-        if(success){
+        String token = request.getHeader("token");
+        try {
+            Map<String, Claim> stringClaimMap = JWTUtils.verifyToken(token);
+            score.setJudgeId(stringClaimMap.get("id").asInt());
+        } catch (Exception e) {
+            e.printStackTrace();
+            rt.setMsg("token解析失败");
+            rt.setResult(false);
+            return rt;
+        }
+
+
+        int success = judgeService.score(score);
+        rt.setResult(success==1);
+        if(success==1){
             rt.setMsg("打分成功");
 
             // 打分成功后，查看当前选手是否已经被所有评委评分完毕，如果评分完毕，则统计总分
@@ -69,14 +89,38 @@ public class JudgeController {
                 rt.setMsg("打分成功，分数统计成功");
             } else if(isDone == -1) {
                 rt.setMsg("打分成功, 分数统计失败");
-            } else if(isDone == 2){
-                rt.setMsg("打分你成功，分数统计成功，归一化完成");
-            } else if(isDone == -2){
-                rt.setMsg("打分成功，分数统计成功，归一化失败");
             }
-        } else {
+        } else if(success == 0){
             rt.setMsg("打分失败");
+        } else if(success == -1){
+            rt.setMsg("请勿重复打分");
         }
+        return rt;
+    }
+
+    @RequestMapping("/logout")
+    public ResultDto<Object> logout(HttpServletRequest request){
+        ResultDto<Object> rt = new ResultDto<>();
+        String token = request.getHeader("token");
+        try {
+            Map<String, Claim> stringClaimMap = JWTUtils.verifyToken(token);
+            Integer judgeId = stringClaimMap.get("id").asInt();
+            boolean success = judgeService.logout(judgeId);
+            rt.setResult(success);
+            if(success){
+                rt.setMsg("退出登录成功");
+            } else{
+                rt.setMsg("退出登录失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.printStackTrace();
+            rt.setMsg("token解析失败");
+            rt.setResult(false);
+            return rt;
+        }
+
+
         return rt;
     }
 }

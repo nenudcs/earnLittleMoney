@@ -39,4 +39,8 @@ public interface CaseDiscussionDao {
     @Select("select MIN(score_total) " +
             "from t_case_discussion where candidate_id = #{candidateId}")
     int selectMinScore(Integer minCase);
+
+
+    @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId} and judge_id = #{judgeId}")
+    int selectIsJudged(CaseDiscussion caseDiscussion);
 }

@@ -33,4 +33,7 @@ public interface TheoreticalPresentationDao {
     @Select("select MIN(score_total) " +
             "from t_theoretical_presentation where candidate_id = #{candidateId}")
     int selectMinScore(Integer minCase);
+
+    @Select("select count(*) from t_theoretical_presentation")
+    int selectAllNum();
 }
