@@ -12,4 +12,6 @@ public interface JudgeService {
 
     boolean logout(Integer judgeId);
 
+    int isConfirmed(Score score);
+
 }

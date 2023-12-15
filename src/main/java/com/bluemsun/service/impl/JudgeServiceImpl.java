@@ -52,30 +52,75 @@ public class JudgeServiceImpl implements JudgeService {
 
         if(score.getTurn() == 2){
             // 案例讨论
-            // 查看当前评委是否已经给该选手打过分了
-
+            // 查看当前评委是否提交
             CaseDiscussion caseDiscussion = new CaseDiscussion();
             caseDiscussion.setScores(score.getScores());
             caseDiscussion.setCandidateId(score.getCandidateId());
             caseDiscussion.setJudgeId(score.getJudgeId());
-            int i = caseDiscussionDao.selectIsJudged(caseDiscussion);
+            int i = caseDiscussionDao.getConfirmed(caseDiscussion);
             if(i > 0){
-                return -1;
+                return 0;
             }
-            int r = caseDiscussionDao.insetOne(caseDiscussion);
-            if (r == 1) return 1;
+            //查看是否提交过
+            int f = caseDiscussionDao.selectIsJudged(caseDiscussion);
+            if(f>0){
+                int r = caseDiscussionDao.updateScore(caseDiscussion);
+                if (r == 1) return 1;
+            }else {
+                int r = caseDiscussionDao.insetOne(caseDiscussion);
+                if (r == 1) return 1;
+            }
+
         }  else if(score.getTurn() == 3){
             // 谈心谈话
             Talk talk = new Talk();
             talk.setScores(score.getScores());
             talk.setCandidateId(score.getCandidateId());
             talk.setJudgeId(score.getJudgeId());
-            int i = talkDao.selectIsJudged(talk);
+            int i = talkDao.getConfirmed(talk);
             if(i > 0){
-                return -1;
+                return 0;
             }
-            int r = talkDao.insetOne(talk);
-            if (r == 1) return 1;
+            int f = talkDao.selectIsJudged(talk);
+            if(f>0){
+                int r = talkDao.updateScore(talk);
+                if (r == 1) return 1;
+            }else{
+                int r = talkDao.insetOne(talk);
+                if (r == 1) return 1;
+            }
+        }
+        return 0;
+    }
+    /**
+     * 1:已提交
+     * 0：未提交
+     */
+    @Override
+    public int isConfirmed(Score score) {
+
+
+        if(score.getTurn() == 2){
+            // 案例讨论
+            CaseDiscussion caseDiscussion = new CaseDiscussion();
+            caseDiscussion.setScores(score.getScores());
+            caseDiscussion.setCandidateId(score.getCandidateId());
+            caseDiscussion.setJudgeId(score.getJudgeId());
+            int i = caseDiscussionDao.getConfirmed(caseDiscussion);
+            if(i > 0){
+                return 1;
+            }
+
+        }  else if(score.getTurn() == 3){
+            // 谈心谈话
+            Talk talk = new Talk();
+            talk.setScores(score.getScores());
+            talk.setCandidateId(score.getCandidateId());
+            talk.setJudgeId(score.getJudgeId());
+            int i = talkDao.getConfirmed(talk);
+            if(i > 0){
+                return 1;
+            }
         }
         return 0;
     }

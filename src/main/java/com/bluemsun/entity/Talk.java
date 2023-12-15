@@ -9,6 +9,7 @@ public class Talk{
     private Integer judgeId;
     private Double score1;
     private Double scoreTotal; // 总分
+    private Integer isConfirmed;//提交，默认为0，提交为1
 
     public void setScores(Double[] ids){
         setScore1(ids[0]);

@@ -16,6 +16,13 @@ public interface TalkDao {
             "values(#{candidateId}, #{judgeId}, #{score1}, #{scoreTotal})")
     int insetOne(Talk talk);
 
+    @Update("update t_talk set score_1 = #{score1} , score_total = #{scoreTotal} where candidate_id = #{candidateId} and judge_id = #{judgeId} ")
+    int updateScore(Talk talk);
+
+    @Select("select count(*) from t_talk where candidate_id = #{candidateId} and judge_id = #{judgeId}} and is_confirmed = 1")
+    int getConfirmed(Talk talk);
+
+
     @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1 " +
             "from t_talk where candidate_id = #{candidateId}")
     List<Talk> getScoreByCandidateId(Integer candidateId);

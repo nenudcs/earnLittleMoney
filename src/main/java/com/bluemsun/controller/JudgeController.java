@@ -97,7 +97,31 @@ public class JudgeController {
         }
         return rt;
     }
+    @RequestMapping("/isComfirmed")
+    public ResultDto<Object> isComfirmed(@RequestBody Score score, HttpServletRequest request){
+        ResultDto<Object> rt = new ResultDto<>();
 
+        String token = request.getHeader("token");
+        try {
+            Map<String, Claim> stringClaimMap = JWTUtils.verifyToken(token);
+            score.setJudgeId(stringClaimMap.get("id").asInt());
+        } catch (Exception e) {
+            e.printStackTrace();
+            rt.setMsg("token解析失败");
+            rt.setResult(false);
+            return rt;
+        }
+
+
+        int success = judgeService.isConfirmed(score);
+        rt.setResult(success==1);
+        if(success==1){
+            rt.setMsg("已提交，不能打分/修改");
+        } else if(success == 0){
+            rt.setMsg("未提交，可以打分/修改");
+        }
+        return rt;
+    }
     @RequestMapping("/logout")
     public ResultDto<Object> logout(HttpServletRequest request){
         ResultDto<Object> rt = new ResultDto<>();
