@@ -59,35 +59,29 @@ public class AdminServiceImpl implements AdminService {
 
         while (iterator.hasNext()) {
             Candidate candidate = iterator.next();
-            int key;
-            int num;
-            double writtenScore;
-            double caseHigh;
-            double caseLow;
-            double caseScore;
-            int hallId;
-            double heartHigh;
-            double heartLow;
-            double heartScore;
-            double theoryHigh;
-            double theoryLow;
-            double theoryScore;
-            double score;
+            Integer key;
+            Integer num;
+            Double writtenScore;
+            Double caseHigh;
+            Double caseLow;
+            Double caseScore;
+            Integer hallId = 1;
+            Double heartHigh;
+            Double heartLow;
+            Double heartScore;
+
+            Double score;
             key = candidate.getId();
             num = candidate.getNum();
             writtenScore = candidate.getScore_1();
             caseHigh = caseDiscussionDao.selectMaxScore(key);
             caseLow = caseDiscussionDao.selectMinScore(key);
             caseScore = candidate.getScore_2();
-            hallId = candidate.getHall_id();
             heartHigh = talkDao.selectMaxScore(key);
             heartLow = talkDao.selectMinScore(key);
             heartScore = candidate.getScore_3();
-            theoryHigh = theoreticalPresentationDao.selectMaxScore(key);
-            theoryLow = theoreticalPresentationDao.selectMinScore(key);
-            theoryScore = candidate.getScore_4();
             score = candidate.getScore_total();
-            FinalScore finalScore = new FinalScore(key,num,writtenScore,caseHigh,caseLow,caseScore,hallId,heartHigh,heartLow,heartScore,theoryHigh,theoryLow,theoryScore,score);
+            FinalScore finalScore = new FinalScore(key,num,writtenScore,caseHigh,caseLow,caseScore,hallId,heartHigh,heartLow,heartScore,score);
             result.add(finalScore);
         }
         return result;
@@ -158,7 +152,7 @@ public class AdminServiceImpl implements AdminService {
                 Double score3 = c.getScore_3();
                 Double score4 = c.getScore_4();
 
-                c.setScore_total(score1*0.2 + score2*0.3 + score3*0.3 + score4*0.2);
+                c.setScore_total(score1*0.2 + score2*0.4 + score4*0.4);
                 int i = candidateDao.setScoreTotal(c);
                 if(i!=1){
                     return false;

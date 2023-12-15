@@ -85,9 +85,9 @@ public class AdminController {
 
 
     @RequestMapping("/calculate")
-    public ResultDto<Object> calculateHalfOrTotalScore(Integer flag){
+    public ResultDto<Object> calculateHalfOrTotalScore(){
         ResultDto<Object> rt = new ResultDto<>();
-        boolean success = adminService.calculate(flag);
+        boolean success = adminService.calculate(2);
         rt.setResult(success);
         if(success){
             rt.setMsg("计算成功");
