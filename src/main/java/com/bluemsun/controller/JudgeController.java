@@ -97,8 +97,8 @@ public class JudgeController {
         }
         return rt;
     }
-    @RequestMapping("/isComfirmed")
-    public ResultDto<Object> isComfirmed(@RequestBody Score score, HttpServletRequest request){
+    @RequestMapping("/isConfirmed")
+    public ResultDto<Object> isConfirmed(@RequestBody Score score, HttpServletRequest request){
         ResultDto<Object> rt = new ResultDto<>();
 
         String token = request.getHeader("token");
