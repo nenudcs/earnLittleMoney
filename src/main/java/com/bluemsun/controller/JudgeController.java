@@ -105,6 +105,7 @@ public class JudgeController {
         try {
             Map<String, Claim> stringClaimMap = JWTUtils.verifyToken(token);
             score.setJudgeId(stringClaimMap.get("id").asInt());
+
         } catch (Exception e) {
             e.printStackTrace();
             rt.setMsg("token解析失败");

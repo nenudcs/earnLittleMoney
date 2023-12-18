@@ -45,11 +45,11 @@ public interface CaseDiscussionDao {
 
     @Select("select MAX(score_total) " +
             "from t_case_discussion where candidate_id = #{candidateId}")
-    Double selectMaxScore(Integer maxCase);
+    Double selectMaxScore(Integer candidateId);
 
     @Select("select MIN(score_total) " +
             "from t_case_discussion where candidate_id = #{candidateId}")
-    Double selectMinScore(Integer minCase);
+    Double selectMinScore(Integer candidateId);
 
 
     @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId} and judge_id = #{judgeId}")
