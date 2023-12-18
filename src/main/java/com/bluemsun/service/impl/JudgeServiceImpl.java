@@ -155,7 +155,7 @@ public class JudgeServiceImpl implements JudgeService {
             score1 = talk.getScore1();
             scoreTotal = talk.getScoreTotal();
             isConfirmed = talk.getIsConfirmed();
-            Talk talk1 = new Talk(id, candidateId,judgeId1,score1,scoreTotal);
+            Talk talk1 = new Talk(id, candidateId,judgeId1,score1,scoreTotal,isConfirmed);
             result.add(talk1);
         }
         return result;
@@ -183,7 +183,7 @@ public class JudgeServiceImpl implements JudgeService {
             score2 = caseDiscussion.getScore2();
             scoreTotal = caseDiscussion.getScoreTotal();
             isConfirmed = caseDiscussion.getIsConfirmed();
-            CaseDiscussion CaseDiscussion1 = new CaseDiscussion(id, candidateId,judgeId1,score1,score2,scoreTotal);
+            CaseDiscussion CaseDiscussion1 = new CaseDiscussion(id, candidateId,judgeId1,score1,score2,scoreTotal,isConfirmed);
             result.add(CaseDiscussion1);
         }
         return result;
