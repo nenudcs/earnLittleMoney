@@ -8,6 +8,7 @@ public class Score {
     private Integer candidateId;    // 选手id（主键）
     private Integer judgeId;
     private Double[] scores;   // 分数，数组
+    private Integer isConfirmed; // 0：保存，1：提交
 //    private Activity activity;    // 活动对象
 
 

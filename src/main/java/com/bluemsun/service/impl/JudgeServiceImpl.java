@@ -63,11 +63,17 @@ public class JudgeServiceImpl implements JudgeService {
             }
             //查看是否提交过
             int f = caseDiscussionDao.selectIsJudged(caseDiscussion);
+            // 查看当前请求是否是提交
+            if(score.getIsConfirmed() == 1){
+                caseDiscussionDao.setIsConfirmed1(caseDiscussion);
+            }
             if(f>0){
                 int r = caseDiscussionDao.updateScore(caseDiscussion);
+
                 if (r == 1) return 1;
             }else {
                 int r = caseDiscussionDao.insetOne(caseDiscussion);
+
                 if (r == 1) return 1;
             }
 
@@ -82,6 +88,9 @@ public class JudgeServiceImpl implements JudgeService {
                 return 0;
             }
             int f = talkDao.selectIsJudged(talk);
+            if(score.getIsConfirmed() == 1){
+                talkDao.setIsConfirmed1(talk);
+            }
             if(f>0){
                 int r = talkDao.updateScore(talk);
                 if (r == 1) return 1;
@@ -103,7 +112,6 @@ public class JudgeServiceImpl implements JudgeService {
         if(score.getTurn() == 2){
             // 案例讨论
             CaseDiscussion caseDiscussion = new CaseDiscussion();
-            caseDiscussion.setScores(score.getScores());
             caseDiscussion.setCandidateId(score.getCandidateId());
             caseDiscussion.setJudgeId(score.getJudgeId());
             int i = caseDiscussionDao.getConfirmed(caseDiscussion);
@@ -114,7 +122,7 @@ public class JudgeServiceImpl implements JudgeService {
         }  else if(score.getTurn() == 3){
             // 谈心谈话
             Talk talk = new Talk();
-            talk.setScores(score.getScores());
+
             talk.setCandidateId(score.getCandidateId());
             talk.setJudgeId(score.getJudgeId());
             int i = talkDao.getConfirmed(talk);

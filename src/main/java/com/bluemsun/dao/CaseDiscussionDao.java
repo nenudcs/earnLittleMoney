@@ -17,11 +17,14 @@ public interface CaseDiscussionDao {
             "values(#{candidateId}, #{judgeId}, #{score1}, #{score2}, #{scoreTotal})")
     int insetOne(CaseDiscussion caseDiscussion);
 
-    @Update("update t_candidate set score_1 = #{score1} ,score_2 = #{score2}, score_total = #{scoreTotal} where candidate_id = #{candidateId} and judge_id = #{judgeId} ")
+    @Update("update t_case_discussion set score_1 = #{score1} ,score_2 = #{score2}, score_total = #{scoreTotal} where candidate_id = #{candidateId} and judge_id = #{judgeId} ")
     int updateScore(CaseDiscussion caseDiscussion);
 
-    @Select("select count(*) from t_candidate where candidate_id = #{candidateId} and judge_id = #{judgeId}} and is_confirmed = 1")
+    @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId} and judge_id = #{judgeId} and is_confirmed = 1")
     int getConfirmed(CaseDiscussion caseDiscussion);
+
+    @Update("update t_case_discussion set is_confirmed = 1 where candidate_id = #{candidateId} and judge_id = #{judgeId}")
+    int setIsConfirmed1(CaseDiscussion caseDiscussion);
 
 
     @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId}")
