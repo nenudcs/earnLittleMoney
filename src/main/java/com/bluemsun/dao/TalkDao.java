@@ -49,4 +49,7 @@ public interface TalkDao {
 
     @Select("select count(*) from t_talk where candidate_id = #{candidateId} and judge_id = #{judgeId}")
     int selectIsJudged(Talk talk);
+
+    @Select("select * from t_talk where judge_id = #{judgeId}")
+    List<Talk> selectJudgeinfo(Integer judgeId);
 }

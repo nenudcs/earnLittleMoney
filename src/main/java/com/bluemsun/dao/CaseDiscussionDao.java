@@ -2,6 +2,7 @@ package com.bluemsun.dao;
 
 import com.bluemsun.entity.Candidate;
 import com.bluemsun.entity.CaseDiscussion;
+import com.bluemsun.entity.Talk;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -53,4 +54,7 @@ public interface CaseDiscussionDao {
 
     @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId} and judge_id = #{judgeId}")
     int selectIsJudged(CaseDiscussion caseDiscussion);
+
+    @Select("select * from t_case_discussion where judge_id = #{judgeId}")
+    List<CaseDiscussion> selectJudgeinfo(Integer judgeId);
 }

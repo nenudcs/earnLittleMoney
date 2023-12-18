@@ -2,6 +2,7 @@ package com.bluemsun.service.impl;
 
 import com.bluemsun.dao.*;
 import com.bluemsun.entity.*;
+import com.bluemsun.entity.dto.FinalScore;
 import com.bluemsun.service.JudgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -131,6 +132,61 @@ public class JudgeServiceImpl implements JudgeService {
             }
         }
         return 0;
+    }
+
+    @Override
+    public List<Talk> getaAllTalkofThisJudge(Integer judgeId) {
+        List<Talk> result = new ArrayList<>();
+        List<Talk> talkList = talkDao.selectJudgeinfo(judgeId);
+        Iterator<Talk> iterator = talkList.iterator();
+
+        while (iterator.hasNext()) {
+            Talk talk = iterator.next();
+            Integer id;
+            Integer candidateId;
+            Integer judgeId1;
+            Double score1;
+            Double scoreTotal; // 总分
+            Integer isConfirmed;//提交，默认为0，提交为1
+
+            id = talk.getId();
+            candidateId = talk.getCandidateId();
+            judgeId1 = talk.getJudgeId();
+            score1 = talk.getScore1();
+            scoreTotal = talk.getScoreTotal();
+            isConfirmed = talk.getIsConfirmed();
+            Talk talk1 = new Talk(id, candidateId,judgeId1,score1,scoreTotal,isConfirmed);
+            result.add(talk1);
+        }
+        return result;
+    }
+
+    @Override
+    public List<CaseDiscussion> getaAllCaseDiscussionofThisJudge(Integer judgeId) {
+        List<CaseDiscussion> result = new ArrayList<>();
+        List<CaseDiscussion> caseDiscussionList = caseDiscussionDao.selectJudgeinfo(judgeId);
+        Iterator<CaseDiscussion> iterator = caseDiscussionList.iterator();
+
+        while (iterator.hasNext()) {
+            CaseDiscussion caseDiscussion = iterator.next();
+            Integer id;
+            Integer candidateId;
+            Integer judgeId1;
+            Double score1;  //  提问分数
+            Double score2;  //  作答分数
+            Double scoreTotal;  // 总分
+            Integer isConfirmed;//提交，默认为0，提交为1
+            id = caseDiscussion.getId();
+            candidateId = caseDiscussion.getCandidateId();
+            judgeId1 = caseDiscussion.getJudgeId();
+            score1 = caseDiscussion.getScore1();
+            score2 = caseDiscussion.getScore2();
+            scoreTotal = caseDiscussion.getScoreTotal();
+            isConfirmed = caseDiscussion.getIsConfirmed();
+            CaseDiscussion CaseDiscussion1 = new CaseDiscussion(id, candidateId,judgeId1,score1,score2,scoreTotal,isConfirmed);
+            result.add(CaseDiscussion1);
+        }
+        return result;
     }
 
     /**

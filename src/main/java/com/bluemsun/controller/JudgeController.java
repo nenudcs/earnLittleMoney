@@ -110,9 +110,12 @@ public class JudgeController {
             rt.setMsg("token解析失败");
             rt.setResult(false);
             return rt;
+        };
+        if(score.getTurn() == 2){
+            rt.setData(judgeService.getaAllTalkofThisJudge(score.getJudgeId()));
+        }else if(score.getTurn() == 3){
+            rt.setData(judgeService.getaAllCaseDiscussionofThisJudge(score.getJudgeId()));
         }
-
-
         int success = judgeService.isConfirmed(score);
         rt.setResult(success==1);
         if(success==1){

@@ -1,7 +1,8 @@
 package com.bluemsun.service;
 
-import com.bluemsun.entity.Judge;
-import com.bluemsun.entity.Score;
+import com.bluemsun.entity.*;
+
+import java.util.List;
 
 public interface JudgeService {
     boolean login(Judge judge);
@@ -13,5 +14,9 @@ public interface JudgeService {
     boolean logout(Integer judgeId);
 
     int isConfirmed(Score score);
+
+    List<Talk> getaAllTalkofThisJudge(Integer judgeId);
+
+    List<CaseDiscussion> getaAllCaseDiscussionofThisJudge(Integer judgeId);
 
 }
