@@ -52,4 +52,7 @@ public interface TalkDao {
 
     @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_total as scoreTotal from t_talk where judge_id = #{judgeId}")
     List<Talk> selectJudgeinfo(Integer judgeId);
+
+    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_total as scoreTotal from t_talk where candidate_id = #{candidateId}")
+    List<Talk> selectCandidateinfo(Integer candidateId);
 }

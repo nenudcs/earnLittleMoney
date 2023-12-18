@@ -3,10 +3,7 @@ package com.bluemsun.controller;
 import com.bluemsun.entity.Candidate;
 import com.bluemsun.entity.CandidateKey;
 import com.bluemsun.entity.Show;
-import com.bluemsun.entity.dto.CandidateAdminDto;
-import com.bluemsun.entity.dto.FinalScore;
-import com.bluemsun.entity.dto.JudgeAdminDto;
-import com.bluemsun.entity.dto.ResultDto;
+import com.bluemsun.entity.dto.*;
 import com.bluemsun.service.AdminService;
 import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +59,21 @@ public class AdminController {
             rt.setResult(true);
             rt.setMsg("获取成功");
             rt.setData(finalScores);
+        }
+        return rt;
+    }
+
+    @RequestMapping("/showCandidateAll")
+    public ResultDto<List<CandidateDetailScore>> getCandidateAll(@RequestBody CandidateAdminDto candidateAdminDto){
+        ResultDto<List<CandidateDetailScore>> rt = new ResultDto<>();
+        List<CandidateDetailScore> candidateDetailScores = adminService.getCandidateScore(candidateAdminDto.getTurn());
+        if(candidateDetailScores.size() == 0){
+            rt.setResult(false);
+            rt.setMsg("获取失败");
+        } else {
+            rt.setResult(true);
+            rt.setMsg("获取成功");
+            rt.setData(candidateDetailScores);
         }
         return rt;
     }

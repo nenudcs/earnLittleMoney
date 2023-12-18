@@ -2,8 +2,11 @@ package com.bluemsun.service.impl;
 
 import com.bluemsun.dao.*;
 import com.bluemsun.entity.Candidate;
+import com.bluemsun.entity.CaseDiscussion;
 import com.bluemsun.entity.Show;
+import com.bluemsun.entity.Talk;
 import com.bluemsun.entity.dto.CandidateAdminDto;
+import com.bluemsun.entity.dto.CandidateDetailScore;
 import com.bluemsun.entity.dto.FinalScore;
 import com.bluemsun.entity.dto.JudgeAdminDto;
 import com.bluemsun.service.AdminService;
@@ -84,6 +87,67 @@ public class AdminServiceImpl implements AdminService {
             FinalScore finalScore = new FinalScore(key,num,writtenScore,caseHigh,caseLow,caseScore,hallId,heartHigh,heartLow,heartScore,score);
             result.add(finalScore);
         }
+        return result;
+
+    }
+
+    @Override
+    public List<CandidateDetailScore> getCandidateScore(Integer turn) {
+        List<CandidateDetailScore> result = new ArrayList<>();
+        Integer NN = 0;
+        if(turn == 2){
+            List<Candidate> candidateList = candidateDao.selctAll();
+            Iterator<Candidate> iterator = candidateList.iterator();
+            while (iterator.hasNext()) {
+                Candidate candidate = iterator.next();
+                Integer num;    // 选手序号
+                String name;
+                List<Object> scores = new ArrayList<>();
+                Double high;
+                Double low;
+                Double total;
+                num = ++NN;
+                name = candidate.getName();
+                List<Talk> list = talkDao.selectCandidateinfo(candidate.getId());
+                Iterator<Talk> iterator1 = list.iterator();
+                while (iterator1.hasNext()){
+                    Talk talk = iterator1.next();
+                    scores.add(talk);
+                }
+                high = talkDao.selectMaxScore(candidate.getId());
+                low = talkDao.selectMinScore(candidate.getId());
+                total = candidate.getScore_2();
+                CandidateDetailScore candidateDetailScore = new CandidateDetailScore(num,name,scores,high,low,total);
+                result.add(candidateDetailScore);
+            }
+        }else if(turn == 3){
+            List<Candidate> candidateList = candidateDao.selctAll();
+            Iterator<Candidate> iterator = candidateList.iterator();
+            while (iterator.hasNext()) {
+                Candidate candidate = iterator.next();
+                Integer num;    // 选手序号
+                String name;
+                List<Object> scores = new ArrayList<>();
+                Double high;
+                Double low;
+                Double total;
+                num = ++NN;
+                name = candidate.getName();
+                List<CaseDiscussion> list = caseDiscussionDao.selectCandidateinfo(candidate.getId());
+                Iterator<CaseDiscussion> iterator1 = list.iterator();
+                while (iterator1.hasNext()){
+                    CaseDiscussion caseDiscussion = iterator1.next();
+                    scores.add(caseDiscussion);
+                }
+                high = caseDiscussionDao.selectMaxScore(candidate.getId());
+                low = caseDiscussionDao.selectMinScore(candidate.getId());
+                total = candidate.getScore_3();
+                CandidateDetailScore candidateDetailScore = new CandidateDetailScore(num,name,scores,high,low,total);
+                result.add(candidateDetailScore);
+            }
+        }
+
+
         return result;
 
     }

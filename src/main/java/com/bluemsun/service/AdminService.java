@@ -3,6 +3,7 @@ package com.bluemsun.service;
 import com.bluemsun.entity.Candidate;
 import com.bluemsun.entity.Show;
 import com.bluemsun.entity.dto.CandidateAdminDto;
+import com.bluemsun.entity.dto.CandidateDetailScore;
 import com.bluemsun.entity.dto.FinalScore;
 import com.bluemsun.entity.dto.JudgeAdminDto;
 
@@ -19,4 +20,6 @@ public interface AdminService {
     boolean calculate(Integer flag);
 
     JudgeAdminDto showOverJudge(JudgeAdminDto judgeAdminDto);
+
+    List<CandidateDetailScore> getCandidateScore(Integer turn);
 }
