@@ -50,7 +50,9 @@ public class JudgeServiceImpl implements JudgeService {
     @Override
     public int score(Score score) {
 
-
+        if(score.getScores() == null){
+            return -1;
+        }
         if(score.getTurn() == 2){
             // 案例讨论
             // 查看当前评委是否提交

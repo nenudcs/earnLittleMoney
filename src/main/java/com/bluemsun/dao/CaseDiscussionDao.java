@@ -55,9 +55,9 @@ public interface CaseDiscussionDao {
     @Select("select count(*) from t_case_discussion where candidate_id = #{candidateId} and judge_id = #{judgeId}")
     int selectIsJudged(CaseDiscussion caseDiscussion);
 
-    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_2 as score2, score_total as scoreTotal from t_case_discussion where judge_id = #{judgeId}")
+    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_2 as score2, score_total as scoreTotal, is_confirmed as isConfirmed from t_case_discussion where judge_id = #{judgeId}")
     List<CaseDiscussion> selectJudgeinfo(Integer judgeId);
 
-    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_2 as score2, score_total as scoreTotal from t_case_discussion where candidate_id = #{candidateId}")
+    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_2 as score2, score_total as scoreTotal, is_confirmed as isConfirmed from t_case_discussion where candidate_id = #{candidateId}")
     List<CaseDiscussion> selectCandidateinfo(Integer candidateId);
 }

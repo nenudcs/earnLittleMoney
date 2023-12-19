@@ -50,9 +50,9 @@ public interface TalkDao {
     @Select("select count(*) from t_talk where candidate_id = #{candidateId} and judge_id = #{judgeId}")
     int selectIsJudged(Talk talk);
 
-    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_total as scoreTotal from t_talk where judge_id = #{judgeId}")
+    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_total as scoreTotal, is_confirmed as isConfirmed from t_talk where judge_id = #{judgeId}")
     List<Talk> selectJudgeinfo(Integer judgeId);
 
-    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_total as scoreTotal from t_talk where candidate_id = #{candidateId}")
+    @Select("select id, candidate_id as candidateId, judge_id as judgeId, score_1 as score1, score_total as scoreTotal, is_confirmed as isConfirmed from t_talk where candidate_id = #{candidateId}")
     List<Talk> selectCandidateinfo(Integer candidateId);
 }

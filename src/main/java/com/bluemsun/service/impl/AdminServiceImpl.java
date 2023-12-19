@@ -95,7 +95,7 @@ public class AdminServiceImpl implements AdminService {
     public List<CandidateDetailScore> getCandidateScore(Integer turn) {
         List<CandidateDetailScore> result = new ArrayList<>();
         Integer NN = 0;
-        if(turn == 2){
+        if(turn == 3){
             List<Candidate> candidateList = candidateDao.selctAll();
             Iterator<Candidate> iterator = candidateList.iterator();
             while (iterator.hasNext()) {
@@ -116,11 +116,11 @@ public class AdminServiceImpl implements AdminService {
                 }
                 high = talkDao.selectMaxScore(candidate.getId());
                 low = talkDao.selectMinScore(candidate.getId());
-                total = candidate.getScore_2();
+                total = candidate.getScore_3();
                 CandidateDetailScore candidateDetailScore = new CandidateDetailScore(num,name,scores,high,low,total);
                 result.add(candidateDetailScore);
             }
-        }else if(turn == 3){
+        }else if(turn == 2){
             List<Candidate> candidateList = candidateDao.selctAll();
             Iterator<Candidate> iterator = candidateList.iterator();
             while (iterator.hasNext()) {
@@ -141,7 +141,7 @@ public class AdminServiceImpl implements AdminService {
                 }
                 high = caseDiscussionDao.selectMaxScore(candidate.getId());
                 low = caseDiscussionDao.selectMinScore(candidate.getId());
-                total = candidate.getScore_3();
+                total = candidate.getScore_2();
                 CandidateDetailScore candidateDetailScore = new CandidateDetailScore(num,name,scores,high,low,total);
                 result.add(candidateDetailScore);
             }
@@ -211,10 +211,10 @@ public class AdminServiceImpl implements AdminService {
             // 计算决赛成绩
             List<Candidate> candidates = candidateDao.selectAllPass();
             for(Candidate c : candidates){
-                Double score1 = c.getScore_1();
-                Double score2 = c.getScore_2();
-                Double score3 = c.getScore_3();
-                Double score4 = c.getScore_4();
+                Double score1 = c.getScore_1(); // 基础知识
+                Double score2 = c.getScore_2(); // 案例讨论
+
+                Double score4 = c.getScore_4(); // 谈心谈话
 
                 c.setScore_total(score1*0.2 + score2*0.4 + score4*0.4);
                 int i = candidateDao.setScoreTotal(c);

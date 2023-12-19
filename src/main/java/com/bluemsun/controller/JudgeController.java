@@ -93,7 +93,7 @@ public class JudgeController {
         } else if(success == 0){
             rt.setMsg("打分失败");
         } else if(success == -1){
-            rt.setMsg("请勿重复打分");
+            rt.setMsg("分数不能为null");
         }
         return rt;
     }
@@ -112,9 +112,9 @@ public class JudgeController {
             rt.setResult(false);
             return rt;
         };
-        if(score.getTurn() == 2){
+        if(score.getTurn() == 3){
             rt.setData(judgeService.getaAllTalkofThisJudge(score.getJudgeId()));
-        }else if(score.getTurn() == 3){
+        }else if(score.getTurn() == 2){
             rt.setData(judgeService.getaAllCaseDiscussionofThisJudge(score.getJudgeId()));
         }
         int success = judgeService.isConfirmed(score);
