@@ -82,7 +82,7 @@ public class AdminServiceImpl implements AdminService {
             caseScore = candidate.getScore_2();
             heartHigh = talkDao.selectMaxScore(key);
             heartLow = talkDao.selectMinScore(key);
-            heartScore = candidate.getScore_3();
+            heartScore = candidate.getScore_4();
             score = candidate.getScore_total();
             FinalScore finalScore = new FinalScore(key,num,writtenScore,caseHigh,caseLow,caseScore,hallId,heartHigh,heartLow,heartScore,score);
             result.add(finalScore);
@@ -211,6 +211,10 @@ public class AdminServiceImpl implements AdminService {
             // 计算决赛成绩
             List<Candidate> candidates = candidateDao.selectAllPass();
             for(Candidate c : candidates){
+                if(c.getScore_1()==null || c.getScore_2()==null || c.getScore_4()==null){
+                    // 分数没有统计完，无法计算决赛成绩
+                    return false;
+                }
                 Double score1 = c.getScore_1(); // 基础知识
                 Double score2 = c.getScore_2(); // 案例讨论
 

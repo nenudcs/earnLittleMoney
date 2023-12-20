@@ -66,17 +66,20 @@ public class JudgeServiceImpl implements JudgeService {
             }
             //查看是否提交过
             int f = caseDiscussionDao.selectIsJudged(caseDiscussion);
-            // 查看当前请求是否是提交
-            if(score.getIsConfirmed() == 1){
-                caseDiscussionDao.setIsConfirmed1(caseDiscussion);
-            }
+
             if(f>0){
                 int r = caseDiscussionDao.updateScore(caseDiscussion);
-
+                // 查看当前请求是否是提交
+                if(score.getIsConfirmed() == 1){
+                    caseDiscussionDao.setIsConfirmed1(caseDiscussion);
+                }
                 if (r == 1) return 1;
             }else {
                 int r = caseDiscussionDao.insetOne(caseDiscussion);
-
+                // 查看当前请求是否是提交
+                if(score.getIsConfirmed() == 1){
+                    caseDiscussionDao.setIsConfirmed1(caseDiscussion);
+                }
                 if (r == 1) return 1;
             }
 
@@ -96,9 +99,17 @@ public class JudgeServiceImpl implements JudgeService {
             }
             if(f>0){
                 int r = talkDao.updateScore(talk);
+                // 查看当前请求是否是提交
+                if(score.getIsConfirmed() == 1){
+                    talkDao.setIsConfirmed1(talk);
+                }
                 if (r == 1) return 1;
             }else{
                 int r = talkDao.insetOne(talk);
+                // 查看当前请求是否是提交
+                if(score.getIsConfirmed() == 1){
+                    talkDao.setIsConfirmed1(talk);
+                }
                 if (r == 1) return 1;
             }
         }

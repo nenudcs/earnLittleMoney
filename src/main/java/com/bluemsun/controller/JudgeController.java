@@ -91,7 +91,7 @@ public class JudgeController {
                 rt.setMsg("打分成功, 分数统计失败");
             }
         } else if(success == 0){
-            rt.setMsg("打分失败");
+            rt.setMsg("已提交，不能修改");
         } else if(success == -1){
             rt.setMsg("分数不能为null");
         }

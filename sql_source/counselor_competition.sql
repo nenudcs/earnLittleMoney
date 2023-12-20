@@ -11,7 +11,7 @@
  Target Server Version : 50716
  File Encoding         : 65001
 
- Date: 05/12/2023 15:39:26
+ Date: 19/12/2023 16:13:24
 */
 
 SET NAMES utf8mb4;
@@ -32,11 +32,11 @@ CREATE TABLE `t_candidate`  (
   `score_4` double NULL DEFAULT NULL,
   `score_half` double NULL DEFAULT NULL,
   `score_total` double NULL DEFAULT NULL,
-  `hall_id` tinyint(4) NULL DEFAULT NULL,
-  `promote` tinyint(4) NULL DEFAULT NULL,
+  `hall_id` tinyint(4) NULL DEFAULT 1,
+  `promote` tinyint(4) NULL DEFAULT 1,
   `groupId` tinyint(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_case_discussion
@@ -49,8 +49,9 @@ CREATE TABLE `t_case_discussion`  (
   `score_1` double NULL DEFAULT NULL,
   `score_2` double NULL DEFAULT NULL,
   `score_total` double NULL DEFAULT NULL,
+  `is_confirmed` tinyint(2) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_judges
@@ -74,12 +75,10 @@ CREATE TABLE `t_talk`  (
   `candidate_id` int(11) NULL DEFAULT NULL,
   `judge_id` int(11) NULL DEFAULT NULL,
   `score_1` double NULL DEFAULT NULL,
-  `score_2` double NULL DEFAULT NULL,
-  `score_3` double NULL DEFAULT NULL,
-  `score_4` double NULL DEFAULT NULL,
   `score_total` double NULL DEFAULT NULL,
+  `is_confirmed` tinyint(2) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_theoretical_presentation
@@ -96,6 +95,6 @@ CREATE TABLE `t_theoretical_presentation`  (
   `score_5` double NULL DEFAULT NULL,
   `score_total` double NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
