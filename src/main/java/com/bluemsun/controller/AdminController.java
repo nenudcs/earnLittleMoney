@@ -5,6 +5,10 @@ import com.bluemsun.entity.CandidateKey;
 import com.bluemsun.entity.Show;
 import com.bluemsun.entity.dto.*;
 import com.bluemsun.service.AdminService;
+import com.bluemsun.utils.CandidateCaseDetailScoreComparator;
+import com.bluemsun.utils.CandidateDetailScoreTalkComparator;
+import com.bluemsun.utils.CaseComparator;
+import com.bluemsun.utils.TalkComparator;
 import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -67,6 +71,13 @@ public class AdminController {
     public ResultDto<List<CandidateDetailScore>> getCandidateAll(@RequestBody CandidateAdminDto candidateAdminDto){
         ResultDto<List<CandidateDetailScore>> rt = new ResultDto<>();
         List<CandidateDetailScore> candidateDetailScores = adminService.getCandidateScore(candidateAdminDto.getTurn());
+        if(candidateAdminDto.getTurn() == 2){
+            // 按照案例讨论的选手顺序排序
+            candidateDetailScores.sort(new CandidateCaseDetailScoreComparator());
+        } else if(candidateAdminDto.getTurn() == 3){
+            // 按照谈心谈话的选手顺序排序
+            candidateDetailScores.sort(new CandidateDetailScoreTalkComparator());
+        }
         if(candidateDetailScores.size() == 0){
             rt.setResult(false);
             rt.setMsg("获取失败");

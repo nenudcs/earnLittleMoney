@@ -6,6 +6,7 @@ E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\dt
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\service\impl\AdminServiceImpl.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\controller\JudgeController.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\dao\CandidateDao.java
+E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\utils\TalkComparator.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\Candidate.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\dto\CandidateDetailScore.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\CandidateKey.java
@@ -15,16 +16,19 @@ E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\Th
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\service\CandidateService.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\dto\JudgeAdminDto.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\service\JudgeService.java
+E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\utils\CaseComparator.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\utils\JWTUtils.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\Judge.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\dto\ResultDto.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\dao\CaseDiscussionDao.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\dao\JudgeDao.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\dao\TheoreticalPresentationDao.java
+E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\utils\CandidateCaseDetailScoreComparator.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\dto\CandidateAdminDto.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\service\impl\CandidateServiceImpl.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\controller\AdminController.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\entity\Show.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\service\AdminService.java
+E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\utils\CandidateDetailScoreTalkComparator.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\service\impl\JudgeServiceImpl.java
 E:\idea_workspace\赚小钱\earnLittleMoney\src\main\java\com\bluemsun\dao\TalkDao.java
