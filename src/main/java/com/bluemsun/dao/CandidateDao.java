@@ -11,7 +11,7 @@ import java.util.List;
 public interface CandidateDao {
 
     @Select("select id,num,name,score_1,score_2,score_3,score_4,score_half,score_total,hall_id,promote " +
-            "from t_candidate")
+            "from t_candidate order by score_total desc")
     List<Candidate> selctAll();
 
     @Select("select * from t_candidate where promote = 1")

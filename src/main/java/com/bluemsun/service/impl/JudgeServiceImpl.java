@@ -7,6 +7,7 @@ import com.bluemsun.service.JudgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
@@ -277,7 +278,9 @@ public class JudgeServiceImpl implements JudgeService {
         OptionalDouble average = scores.stream().mapToDouble(a -> a).average();
         if (average.isPresent()) {
             System.out.println("平均值: " + average.getAsDouble());
-            return average.getAsDouble();
+            DecimalFormat df = new DecimalFormat("#.00");
+            String str = df.format(average.getAsDouble());
+            return Double.parseDouble(str);
         } else {
             System.out.println("列表为空");
             return null;
@@ -306,7 +309,9 @@ public class JudgeServiceImpl implements JudgeService {
         OptionalDouble average = scores.stream().mapToDouble(a -> a).average();
         if (average.isPresent()) {
             System.out.println("平均值: " + average.getAsDouble());
-            return average.getAsDouble();
+            DecimalFormat df = new DecimalFormat("#.00");
+            String str = df.format(average.getAsDouble());
+            return Double.parseDouble(str);
         } else {
             System.out.println("列表为空");
             return null;
@@ -333,7 +338,9 @@ public class JudgeServiceImpl implements JudgeService {
         OptionalDouble average = scores.stream().mapToDouble(a -> a).average();
         if (average.isPresent()) {
             System.out.println("平均值: " + average.getAsDouble());
-            return average.getAsDouble();
+            DecimalFormat df = new DecimalFormat("#.00");
+            String str = df.format(average.getAsDouble());
+            return Double.parseDouble(str);
         } else {
             System.out.println("列表为空");
             return null;

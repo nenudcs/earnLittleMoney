@@ -13,6 +13,7 @@ import com.bluemsun.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -116,7 +117,7 @@ public class AdminServiceImpl implements AdminService {
                 }
                 high = talkDao.selectMaxScore(candidate.getId());
                 low = talkDao.selectMinScore(candidate.getId());
-                total = candidate.getScore_3();
+                total = candidate.getScore_4();
                 CandidateDetailScore candidateDetailScore = new CandidateDetailScore(num,name,scores,high,low,total);
                 result.add(candidateDetailScore);
             }
@@ -192,42 +193,35 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean calculate(Integer flag) {
-
-        if(flag == 1){
-            // 计算初赛成绩
-            List<Candidate> candidates = candidateDao.selctAll();
-            for(Candidate c : candidates){
-                Double score1 = c.getScore_1();
-                Double score2 = c.getScore_2();
-
-                c.setScore_half(score1*0.2 + score2*0.3);
-                int i = candidateDao.setScoreHalf(c);
-                if(i!=1){
-                    return false;
-                }
+    public int calculate() {
+        // 计算决赛成绩
+        List<Candidate> candidates = candidateDao.selectAllPass();
+//        for(Candidate c : candidates) {
+//            if (c.getScore_1() == null || c.getScore_2() == null || c.getScore_4() == null) {
+//                // 分数没有统计完，无法计算决赛成绩
+//                return -1;
+//            }
+//        }
+        for(Candidate c : candidates) {
+            if (c.getScore_1() == null || c.getScore_2() == null || c.getScore_4() == null) {
+                // 分数没有统计完，无法计算决赛成绩
+                return -1;
             }
-        } else if(flag == 2){
-            // 计算决赛成绩
-            List<Candidate> candidates = candidateDao.selectAllPass();
-            for(Candidate c : candidates){
-                if(c.getScore_1()==null || c.getScore_2()==null || c.getScore_4()==null){
-                    // 分数没有统计完，无法计算决赛成绩
-                    return false;
-                }
-                Double score1 = c.getScore_1(); // 基础知识
-                Double score2 = c.getScore_2(); // 案例讨论
+            Double score1 = c.getScore_1(); // 基础知识
+            Double score2 = c.getScore_2(); // 案例讨论
 
-                Double score4 = c.getScore_4(); // 谈心谈话
+            Double score4 = c.getScore_4(); // 谈心谈话
 
-                c.setScore_total(score1*0.2 + score2*0.4 + score4*0.4);
-                int i = candidateDao.setScoreTotal(c);
-                if(i!=1){
-                    return false;
-                }
+
+            DecimalFormat df = new DecimalFormat("#.00");
+            String str = df.format(score1 * 0.2 + score2 * 0.4 + score4 * 0.4);
+            c.setScore_total(Double.parseDouble(str));
+            int i = candidateDao.setScoreTotal(c);
+            if (i != 1) {
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface AdminService {
 
     CandidateAdminDto showOverCandidate(CandidateAdminDto candidateAdminDto);
 
-    boolean calculate(Integer flag);
+    int calculate();
 
     JudgeAdminDto showOverJudge(JudgeAdminDto judgeAdminDto);
 

@@ -99,12 +99,17 @@ public class AdminController {
     @RequestMapping("/calculate")
     public ResultDto<Object> calculateHalfOrTotalScore(){
         ResultDto<Object> rt = new ResultDto<>();
-        boolean success = adminService.calculate(2);
-        rt.setResult(success);
-        if(success){
+        int success = adminService.calculate();
+
+        if(success==1){
+            rt.setResult(true);
             rt.setMsg("计算成功");
-        } else {
-            rt.setMsg("计算失败");
+        } else if(success == -1){
+            rt.setResult(false);
+            rt.setMsg("有选手分数未统计完成，只计算统计完成的选手");
+        } else{
+            rt.setResult(false);
+            rt.setMsg("数据库存入失败");
         }
         return rt;
     }
